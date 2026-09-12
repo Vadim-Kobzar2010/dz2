@@ -1,7 +1,9 @@
 const express = require("express");
 
 const app = express();
+
 const PORT = 3000;
+const HOST = "localhost";
 
 app.get("/timestamp", (req, res) => {
     res.json({
@@ -9,6 +11,20 @@ app.get("/timestamp", (req, res) => {
     });
 });
 
+app.get("/health", (req, res) => {
+    res.json({
+        status: "ok"
+    });
+});
+
+app.get("/stats", (req, res) => {
+    res.json({
+        uptime: Math.floor(process.uptime()),
+        nodeVersion: process.version,
+        timestamp: new Date()
+    });
+});
+
 app.listen(PORT, () => {
-    console.log(`Server started: http://localhost:${PORT}`);
+    console.log(`Server started: http://${HOST}:${PORT}`);
 });
