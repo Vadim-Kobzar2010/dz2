@@ -1,4 +1,6 @@
 import { PostDto } from "../dto/post.js";
+import { Post } from "../domain/post/entity.js";
+import { Repository } from "../domain/post/repository.js";
 
 
 const posts: PostDto[] = [
@@ -25,32 +27,33 @@ const posts: PostDto[] = [
     }
 ];
 
-export function getAll(
-    category?: string,
-    take?: number
-): PostDto[] {
-    let result = posts;
+export function createRepository(): Repository {
+    return {
+        getAll(category?: string, take?: number): Post[] {
+            let result = posts;
 
-    if (category) {
-        result = result.filter(post => post.category === category);
-    }
+            if (category) {
+                result = result.filter(post => post.category === category);
+            }
 
-    if (take) {
-        result = result.slice(0, take);
-    }
+            if (take) {
+                result = result.slice(0, take);
+            }
 
-    return result;
-}
+            return result;
+        },
 
-export function getById(id: number): PostDto | undefined {
-    return posts.find(post => post.id === id);
-}
+        getById(id: number): Post | undefined {
+            return posts.find(post => post.id === id);
+        },
 
-export function addPost(post: PostDto): Promise<PostDto> {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            posts.push(post);
-            resolve(post);
-        }, 300);
-    });
+        create(post: Post): Promise<Post> {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    posts.push(post);
+                    resolve(post);
+                }, 300);
+            });
+        }
+    };
 }

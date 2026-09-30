@@ -1,15 +1,25 @@
 import express from "express";
-import postRouter from "./routers/post.js";
+
+import { createRepository } from "./repositories/post.js";
+import { createService } from "./services/post.js";
+import { createHandlers } from "./handlers/post.js";
+import { createRouter } from "./routers/post.js";
+
+
 
 const app = express();
 
-const PORT = 3000;
-const HOST = "localhost";
-
 app.use(express.json());
 
-app.use(postRouter);
+const repository = createRepository();
+const service = createService(repository);
+const handlers = createHandlers(service);
+const router = createRouter(handlers);
 
-app.listen(PORT, HOST, () => {
-    console.log(`Server started: http://${HOST}:${PORT}`);
+app.use(router);
+
+const PORT = 3000;
+
+app.listen(PORT, () => {
+    console.log(`Server started: http://localhost:${PORT}`);
 });
