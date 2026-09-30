@@ -19,7 +19,8 @@ const router = createRouter(handlers);
 app.use(router);
 
 const PORT = 3000;
+const HOST = "localhost"
 
 app.listen(PORT, () => {
-    console.log(`Server started: http://localhost:${PORT}`);
+    console.log(`Server started: http://${HOST}:${PORT}`);
 });
